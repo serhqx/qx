@@ -25,6 +25,17 @@
 </head>
 
 <body>
-  <div class="enter">click to enter</div>
+  <div id="enter" class="enter">click to enter</div>
+
+<div id="main" style="display:none;">
+  QX
+</div>
+
+<script>
+  document.getElementById("enter").onclick = function () {
+    this.style.display = "none";
+    document.getElementById("main").style.display = "block";
+  };
+</script>
 </body>
 </html>
