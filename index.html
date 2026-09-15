@@ -5,40 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #000;
-      color: #fff;
+      width: 100vw;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
+      background: #000;
+      color: white;
       font-family: Arial, sans-serif;
     }
 
-    .enter {
+    #enter {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
       cursor: pointer;
-      font-size: 16px;
-      letter-spacing: 2px;
+      z-index: 10;
+      letter-spacing: 3px;
+      font-size: 15px;
+    }
+
+    #main {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+
+      background:
+        linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.55)),
+        url("background.jpg") center/cover no-repeat;
+    }
+
+    .profile h1 {
+      margin: 0;
+      font-size: 48px;
+    }
+
+    .profile p {
+      margin-top: 18px;
+      font-size: 14px;
+      letter-spacing: 5px;
     }
   </style>
 </head>
 
 <body>
-  <div id="enter" class="enter">click to enter</div>
 
-<div id="main" style="display:none;">
-  <div class="profile">
-  <h1>serh (!)</h1>
-  <p>s a m e s h i t / d i f f e r e n t d a y</p>
-</div>
-</div>
+  <div id="enter">click to enter</div>
 
-<script>
-  document.getElementById("enter").onclick = function () {
-    this.style.display = "none";
-    document.getElementById("main").style.display = "block";
-  };
-</script>
-</body>
-</html>
+  <div id="main">
+    <div class="profile">
+      <h1>serh (!)</h1>
+      <p>s a m e s h i t / d i f f e r e n t d a y</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("enter").onclick = function() {
