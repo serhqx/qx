@@ -17,6 +17,7 @@
       background: #000;
       color: white;
       font-family: Arial, sans-serif;
+      cursor: pointer; /* Робимо курсор у вигляді вказівника для кліків */
     }
 
     #enter {
@@ -39,6 +40,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      z-index: 1;
 
       background:
         linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.55)),
@@ -55,13 +57,36 @@
       font-size: 14px;
       letter-spacing: 5px;
     }
+
+    /* Стилі для нашого нового лічильника */
+    #click-counter {
+      display: none; /* Спочатку ховаємо його, поки не клікнули перший раз */
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      z-index: 5;
+      pointer-events: none; /* Щоб плашка не блокувала кліки мишкою */
+    }
+
+    #counter-value {
+      font-weight: bold;
+      color: #00ff00; /* Робимо цифру зеленою під стиль хакерства */
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- Початковий екран -->
   <div id="enter">click for free virus</div>
 
+  <!-- Головний екран (з'явиться після кліку) -->
   <div id="main">
     <div class="profile">
       <h1>serh (!)</h1>
@@ -69,5 +94,38 @@
     </div>
   </div>
 
+  <!-- Елемент лічильника кліків -->
+  <div id="click-counter">
+    CLICKS: <span id="counter-value">0</span>
+  </div>
+
   <script>
-    document.getElementById("enter").onclick = function() {
+    let clickCount = 0;
+    const enterScreen = document.getElementById("enter");
+    const mainScreen = document.getElementById("main");
+    const counterWidget = document.getElementById("click-counter");
+    const counterValue = document.getElementById("counter-value");
+
+    // Перший клік: ховаємо заставку, відкриваємо сайт і лічильник
+    enterScreen.onclick = function() {
+      enterScreen.style.display = "none";
+      mainScreen.style.display = "flex";
+      counterWidget.style.display = "block";
+      
+      // Зараховуємо найперший клік
+      clickCount++;
+      counterValue.textContent = clickCount;
+    };
+
+    // Наступні кліки по всьому екрану збільшують лічильник
+    document.body.onclick = function() {
+      // Працює лише тоді, коли початковий екран уже сховано
+      if (enterScreen.style.display === "none") {
+        clickCount++;
+        counterValue.textContent = clickCount;
+      }
+    };
+  </script>
+
+</body>
+</html>
