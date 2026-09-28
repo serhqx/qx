@@ -17,26 +17,14 @@
       background: #000;
       color: white;
       font-family: Arial, sans-serif;
-      cursor: pointer; /* Робимо курсор у вигляді вказівника для кліків */
-    }
-
-    #enter {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000;
       cursor: pointer;
-      z-index: 10;
-      letter-spacing: 3px;
-      font-size: 15px;
+      user-select: none; /* Забороняємо виділення тексту при швидких кліках */
     }
 
     #main {
       position: fixed;
       inset: 0;
-      display: none;
+      display: flex; /* Екран тепер відкритий одразу */
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -58,9 +46,8 @@
       letter-spacing: 5px;
     }
 
-    /* Стилі для нашого нового лічильника */
+    /* Стилі для спільного лічильника */
     #click-counter {
-      display: none; /* Спочатку ховаємо його, поки не клікнули перший раз */
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -71,22 +58,19 @@
       font-size: 14px;
       letter-spacing: 2px;
       z-index: 5;
-      pointer-events: none; /* Щоб плашка не блокувала кліки мишкою */
+      pointer-events: none; /* Кліки проходять крізь плашку */
     }
 
     #counter-value {
       font-weight: bold;
-      color: #00ff00; /* Робимо цифру зеленою під стиль хакерства */
+      color: #00ff00; /* Зелений колір для кліків */
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Початковий екран -->
-  <div id="enter">click for free virus</div>
-
-  <!-- Головний екран (з'явиться після кліку) -->
+  <!-- Головний екран, який показується відразу -->
   <div id="main">
     <div class="profile">
       <h1>serh (!)</h1>
@@ -94,36 +78,48 @@
     </div>
   </div>
 
-  <!-- Елемент лічильника кліків -->
+  <!-- Віджет спільного лічильника -->
   <div id="click-counter">
-    CLICKS: <span id="counter-value">0</span>
+    CLICKS: <span id="counter-value">Loading...</span>
   </div>
 
   <script>
-    let clickCount = 0;
-    const enterScreen = document.getElementById("enter");
-    const mainScreen = document.getElementById("main");
-    const counterWidget = document.getElementById("click-counter");
+    // Заміни це посилання на своє з Firebase (як описано в попередньому кроці)
+    const dbUrl = "https://ТВІЙ_ПРОЄКТ_З_://firebaseio.com";
+
     const counterValue = document.getElementById("counter-value");
+    let currentTotal = 0;
 
-    // Перший клік: ховаємо заставку, відкриваємо сайт і лічильник
-    enterScreen.onclick = function() {
-      enterScreen.style.display = "none";
-      mainScreen.style.display = "flex";
-      counterWidget.style.display = "block";
-      
-      // Зараховуємо найперший клік
-      clickCount++;
-      counterValue.textContent = clickCount;
-    };
+    // Функція отримання кліків з сервера
+    function fetchClicks() {
+      fetch(dbUrl)
+        .then(response => response.json())
+        .then(data => {
+          currentTotal = data !== null ? data : 0;
+          counterValue.textContent = currentTotal;
+        })
+        .catch(err => console.error("Помилка завантаження:", err));
+    }
 
-    // Наступні кліки по всьому екрану збільшують лічильник
+    // Перше завантаження при старті
+    fetchClicks();
+
+    // Оновлюємо базу кожні 2 секунди для синхронізації між усіма людьми
+    setInterval(fetchClicks, 2000);
+
+    // Клік у будь-якому місці екрана
     document.body.onclick = function() {
-      // Працює лише тоді, коли початковий екран уже сховано
-      if (enterScreen.style.display === "none") {
-        clickCount++;
-        counterValue.textContent = clickCount;
-      }
+      currentTotal++;
+      counterValue.textContent = currentTotal;
+
+      // Відправляємо новий клік в онлайн-базу
+      fetch(dbUrl, {
+        method: 'PUT',
+        body: JSON.stringify(currentTotal),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).catch(err => console.error("Помилка відправки:", err));
     };
   </script>
 
