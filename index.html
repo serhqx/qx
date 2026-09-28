@@ -18,13 +18,13 @@
       color: white;
       font-family: Arial, sans-serif;
       cursor: pointer;
-      user-select: none; /* Забороняємо виділення тексту при швидких кліках */
+      user-select: none; /* Запрещаем выделение текста при частых кликах */
     }
 
     #main {
       position: fixed;
       inset: 0;
-      display: flex; /* Екран тепер відкритий одразу */
+      display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -35,18 +35,7 @@
         url("background.jpg") center/cover no-repeat;
     }
 
-    .profile h1 {
-      margin: 0;
-      font-size: 48px;
-    }
-
-    .profile p {
-      margin-top: 18px;
-      font-size: 14px;
-      letter-spacing: 5px;
-    }
-
-    /* Стилі для спільного лічильника */
+    /* Стили для общего счетчика кликов */
     #click-counter {
       position: fixed;
       bottom: 20px;
@@ -58,39 +47,34 @@
       font-size: 14px;
       letter-spacing: 2px;
       z-index: 5;
-      pointer-events: none; /* Кліки проходять крізь плашку */
+      pointer-events: none; /* Клики проходят сквозь плашку */
     }
 
     #counter-value {
       font-weight: bold;
-      color: #00ff00; /* Зелений колір для кліків */
+      color: #00ff00; /* Зеленый цвет для цифр */
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Головний екран, який показується відразу -->
-  <div id="main">
-    <div class="profile">
-      <h1>serh (!)</h1>
-      <p>s a m e s h i t / d i f f e r e n t d a y</p>
-    </div>
-  </div>
+  <!-- Главный экран (только фон, весь текст убран) -->
+  <div id="main"></div>
 
-  <!-- Віджет спільного лічильника -->
+  <!-- Виджет общего счетчика -->
   <div id="click-counter">
     CLICKS: <span id="counter-value">Loading...</span>
   </div>
 
   <script>
-    // Заміни це посилання на своє з Firebase (як описано в попередньому кроці)
-    const dbUrl = "https://ТВІЙ_ПРОЄКТ_З_://firebaseio.com";
+    // Замени эту ссылку на свою из Firebase
+    const dbUrl = "https://ТВОЙ_ПРОЕКТ_ИЗ_://firebaseio.com";
 
     const counterValue = document.getElementById("counter-value");
     let currentTotal = 0;
 
-    // Функція отримання кліків з сервера
+    // Функция получения кликов с сервера
     function fetchClicks() {
       fetch(dbUrl)
         .then(response => response.json())
@@ -98,28 +82,28 @@
           currentTotal = data !== null ? data : 0;
           counterValue.textContent = currentTotal;
         })
-        .catch(err => console.error("Помилка завантаження:", err));
+        .catch(err => console.error("Ошибка загрузки:", err));
     }
 
-    // Перше завантаження при старті
+    // Первая загрузка при старте
     fetchClicks();
 
-    // Оновлюємо базу кожні 2 секунди для синхронізації між усіма людьми
+    // Обновляем базу каждые 2 секунды для синхронизации между всеми людьми
     setInterval(fetchClicks, 2000);
 
-    // Клік у будь-якому місці екрана
+    // Клик в любом месте экрана
     document.body.onclick = function() {
       currentTotal++;
       counterValue.textContent = currentTotal;
 
-      // Відправляємо новий клік в онлайн-базу
+      // Отправляем новый клик в онлайн-базу
       fetch(dbUrl, {
         method: 'PUT',
         body: JSON.stringify(currentTotal),
         headers: {
           'Content-Type': 'application/json'
         }
-      }).catch(err => console.error("Помилка відправки:", err));
+      }).catch(err => console.error("Ошибка отправки:", err));
     };
   </script>
 
