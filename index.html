@@ -18,7 +18,7 @@
       color: white;
       font-family: Arial, sans-serif;
       cursor: pointer;
-      user-select: none; /* Запрещаем выделение текста при частых кликах */
+      user-select: none;
     }
 
     #main {
@@ -35,7 +35,7 @@
         url("background.jpg") center/cover no-repeat;
     }
 
-    /* Стили для общего счетчика кликов */
+    /* Стилі лічильника кліків */
     #click-counter {
       position: fixed;
       bottom: 20px;
@@ -47,63 +47,79 @@
       font-size: 14px;
       letter-spacing: 2px;
       z-index: 5;
-      pointer-events: none; /* Клики проходят сквозь плашку */
+      pointer-events: none;
     }
 
     #counter-value {
       font-weight: bold;
-      color: #00ff00; /* Зеленый цвет для цифр */
+      color: #00ff00;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Главный экран (только фон, весь текст убран) -->
+  <!-- Головний екран (тільки фон) -->
   <div id="main"></div>
 
-  <!-- Виджет общего счетчика -->
+  <!-- Віджет лічильника -->
   <div id="click-counter">
     CLICKS: <span id="counter-value">Loading...</span>
   </div>
 
   <script>
-    // Замени эту ссылку на свою из Firebase
-    const dbUrl = "https://ТВОЙ_ПРОЕКТ_ИЗ_://firebaseio.com";
+    // Унікальний ключ для твого сайту, щоб кліки не змішувалися з іншими сайтами
+    // Можеш змінити "serh_cool_clicker_2026", якщо захочеш скинути лічильник на 0
+    const siteKey = "serh_cool_clicker_2026";
+    const dbUrl = `https://counterapi.dev{siteKey}`;
 
     const counterValue = document.getElementById("counter-value");
     let currentTotal = 0;
 
-    // Функция получения кликов с сервера
+    // 1. Функція завантаження актуальних кліків з сервера
     function fetchClicks() {
       fetch(dbUrl)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) throw new Error();
+          return response.json();
+        })
         .then(data => {
-          currentTotal = data !== null ? data : 0;
+          currentTotal = data.value;
           counterValue.textContent = currentTotal;
         })
-        .catch(err => console.error("Ошибка загрузки:", err));
+        .catch(() => {
+          // Якщо ключ новий і його ще немає на сервері, створюємо його
+          initCounter();
+        });
     }
 
-    // Первая загрузка при старте
+    // Функція для первинного створення лічильника на сервері
+    function initCounter() {
+      fetch(`${dbUrl}/set?value=0`)
+        .then(() => { counterValue.textContent = 0; })
+        .catch(err => console.error("Помилка сервера:", err));
+    }
+
+    // Завантажуємо дані відразу при відкритті сайту
     fetchClicks();
 
-    // Обновляем базу каждые 2 секунды для синхронизации между всеми людьми
-    setInterval(fetchClicks, 2000);
+    // Кожні 2.5 секунди перевіряємо, чи не клікнув хтось інший
+    setInterval(fetchClicks, 2500);
 
-    // Клик в любом месте экрана
+    // 2. Клік по екрану (збільшує лічильник в базі даних на +1)
     document.body.onclick = function() {
+      // Оновлюємо на екрані моментально для швидкості
       currentTotal++;
       counterValue.textContent = currentTotal;
 
-      // Отправляем новый клик в онлайн-базу
-      fetch(dbUrl, {
-        method: 'PUT',
-        body: JSON.stringify(currentTotal),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).catch(err => console.error("Ошибка отправки:", err));
+      // Надсилаємо команду серверу збільшити лічильник на 1
+      fetch(`${dbUrl}/up`)
+        .then(response => response.json())
+        .then(data => {
+          currentTotal = data.value;
+          counterValue.textContent = currentTotal;
+        })
+        .catch(err => console.error("Не вдалося зберегти клік:", err));
     };
   </script>
 
