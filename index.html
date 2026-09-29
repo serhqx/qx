@@ -122,7 +122,7 @@ function queueSend() { dirty = true; if (sendTimer || sending) return; sendTimer
 async function sendNow() {
   if (!username || sending) { dirty = true; return; }
   sending = true; dirty = false;
-  try { await fetch(`${DB_URL}/players/${encodeURIComponent(username)}.json`, { method: 'PUT', body: JSON.stringify({ name: username, score: mine() }) }); }
+  try { await fetch(`${DB_URL}/players/${encodeURIComponent(username)}.json`, { method: 'PUT', body: JSON.stringify({ name: username, score: mine(), ts: { ".sv": "timestamp" } }) }); }
   catch (e) { dirty = true; }
   sending = false; if (dirty) queueSend();
 }
