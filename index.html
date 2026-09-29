@@ -5,264 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virus Clicker - Internet Infection</title>
     <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        body {
-            background-color: #050508;
-            color: #00ff66;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
-        body::before {
-            content: "1001010 01101 11001\n001101 10110 0011\n110110 00110 1011";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            color: rgba(0, 255, 102, 0.02);
-            font-size: 1.2rem;
-            white-space: pre;
-            padding: 20px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        /* Двоколонкова структура для гри та лідерборду */
-        .game-layout {
-            display: flex;
-            gap: 40px;
-            max-width: 900px;
-            width: 100%;
-            justify-content: center;
-            align-items: flex-start;
-            z-index: 1;
-            padding: 20px;
-            flex-wrap: wrap;
-        }
-        .container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 340px;
-        }
-        h1 {
-            font-size: 2.3rem;
-            margin: 0 0 5px 0;
-            text-shadow: 0 0 15px rgba(0, 255, 102, 0.7);
-            letter-spacing: 2px;
-        }
-        .status-text {
-            color: #888;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        .score-container {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #00ffff;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-        .click-btn {
-            width: 180px;
-            height: 180px;
-            border-radius: 25px;
-            background: #0f1c14;
-            border: 3px dashed #00ff66;
-            color: #00ff66;
-            font-size: 3.5rem;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.05s ease;
-            box-shadow: inset 0 0 20px rgba(0, 255, 102, 0.2), 0 0 30px rgba(0, 255, 102, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .click-btn:active {
-            transform: scale(0.95);
-            border-style: solid;
-            background: #00ff66;
-            color: #000;
-            box-shadow: 0 0 40px rgba(0, 255, 102, 0.8);
-        }
-        .shop {
-            margin-top: 25px;
-            background: rgba(10, 25, 15, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #00ff66;
-            width: 100%;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
-        }
-        .shop-title {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: #ff0055;
-            text-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
-            text-transform: uppercase;
-        }
-        .stats {
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            text-align: left;
-            line-height: 1.4;
-        }
-        .upgrade-btn {
-            width: 100%;
-            background: transparent;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            padding: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-            text-transform: uppercase;
-        }
-        .upgrade-btn:hover:not(:disabled) {
-            background: #00ff66;
-            color: #000;
-        }
-        .upgrade-btn:disabled {
-            border-color: #333; color: #333; cursor: not-allowed;
-        }
-        /* СТИЛІ ТАБЛИЦІ ЛІДЕРІВ */
-        .leaderboard {
-            background: rgba(10, 15, 25, 0.8);
-            border: 1px solid #00ffff;
-            border-radius: 10px;
-            padding: 20px;
-            width: 320px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
-        }
-        .leaderboard-title {
-            font-size: 1.1rem;
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            text-align: center;
-            border-bottom: 1px dashed #00ffff;
-            padding-bottom: 5px;
-        }
-        .player-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.95rem;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-        }
+        * { box-sizing: border-box; user-select: none; font-family: 'Courier New', Courier, monospace; }
+        body { background-color: #050508; color: #00ff66; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; position: relative; }
+        body::before { content: "1001010 01101 11001\n001101 10110 0011\n110110 00110 1011"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; color: rgba(0, 255, 102, 0.02); font-size: 1.2rem; white-space: pre; padding: 20px; pointer-events: none; z-index: 0; }
+        .game-layout { display: flex; gap: 40px; max-width: 900px; width: 100%; justify-content: center; align-items: flex-start; z-index: 1; padding: 20px; flex-wrap: wrap; }
+        .container { text-align: center; display: flex; flex-direction: column; align-items: center; width: 340px; }
+        h1 { font-size: 2.3rem; margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(0, 255, 102, 0.7); letter-spacing: 2px; }
+        .status-text { color: #888; font-size: 0.85rem; margin-bottom: 15px; text-transform: uppercase; }
+        .score-container { font-size: 2rem; font-weight: bold; margin-bottom: 20px; color: #00ffff; text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+        .click-btn { width: 180px; height: 180px; border-radius: 25px; background: #0f1c14; border: 3px dashed #00ff66; color: #00ff66; font-size: 3.5rem; cursor: pointer; outline: none; transition: all 0.05s ease; box-shadow: inset 0 0 20px rgba(0, 255, 102, 0.2), 0 0 30px rgba(0, 255, 102, 0.2); display: flex; align-items: center; justify-content: center; }
+        .click-btn:active { transform: scale(0.95); border-style: solid; background: #00ff66; color: #000; box-shadow: 0 0 40px rgba(0, 255, 102, 0.8); }
+        .shop { margin-top: 25px; background: rgba(10, 25, 15, 0.8); padding: 15px; border-radius: 10px; border: 1px solid #00ff66; width: 100%; box-shadow: 0 0 15px rgba(0, 255, 102, 0.1); }
+        .shop-title { font-size: 1rem; margin-bottom: 10px; color: #ff0055; text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); text-transform: uppercase; }
+        .stats { font-size: 0.85rem; margin-bottom: 12px; text-align: left; line-height: 1.4; }
+        .upgrade-btn { width: 100%; background: transparent; color: #00ff66; border: 1px solid #00ff66; padding: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; transition: all 0.2s; text-transform: uppercase; }
+        .upgrade-btn:hover:not(:disabled) { background: #00ff66; color: #000; }
+        .upgrade-btn:disabled { border-color: #333; color: #333; cursor: not-allowed; }
+        .leaderboard { background: rgba(10, 15, 25, 0.8); border: 1px solid #00ffff; border-radius: 10px; padding: 20px; width: 320px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); }
+        .leaderboard-title { font-size: 1.1rem; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); margin-bottom: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed #00ffff; padding-bottom: 5px; }
+        .player-row { display: flex; justify-content: space-between; font-size: 0.95rem; padding: 6px 0; border-bottom: 1px solid rgba(0, 255, 255, 0.1); }
         .player-row:last-child { border: none; }
         .player-name { color: #fff; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .player-score { color: #00ff66; font-weight: bold; }
-        
-        .floating-text {
-            position: absolute;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #00ff66;
-            pointer-events: none;
-            animation: floatUp 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-            text-shadow: 0 0 8px #00ff66;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-130px) scale(1.4); }
-        }
+        .floating-text { position: absolute; font-size: 1.5rem; font-weight: bold; color: #00ff66; pointer-events: none; animation: floatUp 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; text-shadow: 0 0 8px #00ff66; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-130px) scale(1.4); } }
     </style>
 </head>
 <body>
-
     <div class="game-layout">
-        <!-- ЛІВА ЧАСТИНА: ГРА -->
         <div class="container">
             <h1>NET_WORM.exe</h1>
             <div class="status-text" id="userStatus">Хакер: Анонім</div>
-            
             <div class="score-container">Заражено ПК: <span id="score">0</span></div>
             <button class="click-btn" id="clickerBtn">🌐</button>
-
             <div class="shop">
                 <div class="shop-title">>_ Модулі</div>
-                <div class="stats">
-                    • Атака: +<span id="clickPower">1</span> ПК/клік<br>
-                    • Софт: <span id="virusLevel">Trojan.v1</span>
-                </div>
+                <div class="stats">• Атака: +<span id="clickPower">1</span> ПК/клік<br>• Софт: <span id="virusLevel">Trojan.v1</span></div>
                 <button class="upgrade-btn" id="upgradeBtn">Апгрейд коду (Ціна: 10)</button>
             </div>
         </div>
-
-        <!-- ПРАВА ЧАСТИНА: ТАБЛИЦЯ ЛІДЕРІВ -->
         <div class="leaderboard">
             <div class="leaderboard-title">>_ ТОП ХАКЕРІВ</div>
-            <div id="leaderboardContent">Завантаження мережі...</div>
+            <div id="leaderboardContent">Завантаження...</div>
         </div>
     </div>
-
     <script>
-        // --- КОНФІГУРАЦІЯ БЕЗКОШТОВНОЇ БАЗИ ДАНИХ (Scorebot) ---
-        // Ви можете замінити 'serh_lol_virus_clicker' на будь-яке інше унікальне слово, якщо захочете скинути глобальний лідерборд
         const BOARD_ID = 'serh_lol_virus_clicker'; 
         const API_URL = `https://scorebot.org{BOARD_ID}/scores/`;
-
         const virusNames = ["Trojan.v1", "Spyware.dll", "NetWorm.x64", "Rootkit.sys", "Ransom.Crypto", "AI.Infection"];
-
-        // Отримання імені хакера
         let username = localStorage.getItem('virus_username');
         if (!username) {
-            username = prompt("Введіть ваш хакерський нікнейм для таблиці лідерів:", "Hacker_" + Math.floor(Math.random() * 1000));
+            username = prompt("Введіть ваш хакерський нікнейм:", "Hacker_" + Math.floor(Math.random() * 1000));
             if (!username || username.trim() === "") username = "Anon_" + Math.floor(Math.random() * 100);
-            localStorage.setItem('virus_username', username.substring(0, 15)); // обмежуємо до 15 символів
+            localStorage.setItem('virus_username', username.substring(0, 15));
         }
         document.getElementById('userStatus').textContent = `Хакер: ${username}`;
-
-        // Завантаження локальних даних
         let score = parseInt(localStorage.getItem('net_virus_clicks')) || 0;
         let clickPower = parseInt(localStorage.getItem('net_virus_power')) || 1;
         let upgradeCost = parseInt(localStorage.getItem('net_virus_cost')) || 10;
         let rankIndex = parseInt(localStorage.getItem('net_virus_rank')) || 0;
-
-        const scoreEl = document.getElementById('score');
-        const clickerBtn = document.getElementById('clickerBtn');
-        const upgradeBtn = document.getElementById('upgradeBtn');
-        const clickPowerEl = document.getElementById('clickPower');
-        const virusLevelEl = document.getElementById('virusLevel');
-        const leaderboardContent = document.getElementById('leaderboardContent');
-
-        function updateUI() {
-            scoreEl.textContent = score.toLocaleString();
-            clickPowerEl.textContent = clickPower;
-            virusLevelEl.textContent = virusNames[Math.min(rankIndex, virusNames.length - 1)];
-            upgradeBtn.textContent = `Модернізувати код (Ціна: ${upgradeCost})`;
-            upgradeBtn.disabled = score < upgradeCost;
-        }
-
-        function saveProgress() {
-            localStorage.setItem('net_virus_clicks', score);
-            localStorage.setItem('net_virus_power', clickPower);
-            localStorage.setItem('net_virus_cost', upgradeCost);
-            localStorage.setItem('net_virus_rank', rankIndex);
-        }
-
-        // Клік та надсилання рахунку на сервер (з оптимізацією, щоб не спамити сервер кожну мілісекунду)
+        const scoreEl = document.getElementById('score'), clickerBtn = document.getElementById('clickerBtn'), upgradeBtn = document.getElementById('upgradeBtn'), clickPowerEl = document.getElementById('clickPower'), virusLevelEl = document.getElementById('virusLevel'), leaderboardContent = document.getElementById('leaderboardContent');
+        function updateUI() { scoreEl.textContent = score.toLocaleString(); clickPowerEl.textContent = clickPower; virusLevelEl.textContent = virusNames[Math.min(rankIndex, virusNames.length - 1)]; upgradeBtn.textContent = `Модернізувати код (Ціна: ${upgradeCost})`; upgradeBtn.disabled = score < upgradeCost; }
+        function saveProgress() { localStorage.setItem('net_virus_clicks', score); localStorage.setItem('net_virus_power', clickPower); localStorage.setItem('net_virus_cost', upgradeCost); localStorage.setItem('net_virus_rank', rankIndex); }
         let sendTimeout;
-        clickerBtn.addEventListener('click', (e) => {
-            score += clickPower;
-            updateUI();
-            saveProgress();
-            
-            const binary = Math.random() > 0.5 ? "1" : "0";
-            createFloatingText(e.clientX, e.clientY, `${binary} (+${clickPower})`);
-
-            // Оновлюємо топ на сервері через 2 секунди після того, як користувач перестав активно клікати
-            clearTimeout(sendTimeout);
-            sendTimeout = setTimeout(submitScore, 2000);
+        clickerBtn.addEventListener('click', (e) => { score += clickPower; updateUI(); saveProgress(); const binary = Math.random() > 0.5 ? "1" : "0"; createFloatingText(e.clientX, e.clientY, `${binary} (+${clickPower})`); clearTimeout(sendTimeout); sendTimeout = setTimeout(submitScore, 2000); });
+        upgradeBtn.addEventListener('click', () => { if (score >= upgradeCost) { score -= upgradeCost; clickPower += 2; rankIndex = Math.floor(clickPower / 5); upgradeCost = Math.round(upgradeCost * 1.7); updateUI(); saveProgress(); submitScore(); } });
+        async function submitScore() { try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: username, score: score }) }); fetchLeaderboard(); } catch (err) { console.error(err); } }
+        async function fetchLeaderboard() { try { const response = await fetch(API_URL); if (!response.ok) throw new Error(); const data = await response.json(); const topPlayers = data.sort((a, b) => b.score - a.score).slice(0, 5); leaderboardContent.innerHTML = ''; if(topPlayers.length === 0) { leaderboardContent.innerHTML = '<div>Мережа чиста.</div>'; return; } topPlayers.forEach((player, index) => { const row = document.createElement('div'); row.className = 'player-row'; row.innerHTML = `<span class="player-name">${index + 1}. ${player.name}</span><span class="player-score">${parseInt(player.score).toLocaleString()}</span>`; leaderboardContent.appendChild(row); }); } catch (err) { leaderboardContent.innerHTML = '<div style="color:#ff0055;">Помилка мережі...</div>'; } }
+        function createFloatingText(x, y, text) { const el = document.createElement('div'); el.className = 'floating-text'; el.textContent = text; el.style.left = `${x - 20}px`; el.style.top = `${y - 20}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 700); }
+        updateUI(); fetchLeaderboard(); setInterval(fetchLeaderboard, 15000);
+    </script>
+</body>
+</html>
