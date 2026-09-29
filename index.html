@@ -1,128 +1,37 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virus Clicker</title>
-    <style>
-        * { box-sizing: border-box; user-select: none; font-family: monospace; }
-        body { background: #050508; color: #0f6; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .game-layout { display: flex; gap: 20px; max-width: 900px; width: 100%; justify-content: center; align-items: flex-start; padding: 10px; flex-wrap: wrap; z-index: 1; }
-        .container { text-align: center; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 340px; }
-        h1 { font-size: 2.2rem; margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(0,255,102,0.7); }
-        .status-text { color: #888; font-size: 0.85rem; margin-bottom: 15px; cursor: pointer; }
-        .status-text:hover { color: #0ff; }
-        .score-container { font-size: 2rem; font-weight: bold; margin-bottom: 20px; color: #0ff; text-shadow: 0 0 20px rgba(0,255,255,0.5); }
-        .click-btn { width: 150px; height: 150px; border-radius: 25px; background: #0f1c14; border: 3px dashed #0f6; color: #0f6; font-size: 3.5rem; cursor: pointer; outline: none; transition: all 0.05s; box-shadow: inset 0 0 20px rgba(0,255,102,0.2), 0 0 30px rgba(0,255,102,0.2); display: flex; align-items: center; justify-content: center; }
-        .click-btn:active { transform: scale(0.95); border-style: solid; background: #0f6; color: #000; box-shadow: 0 0 40px #0f6; }
-        .shop { margin-top: 20px; background: rgba(10,25,15,0.8); padding: 15px; border-radius: 10px; border: 1px solid #0f6; width: 100%; }
-        .shop-title { font-size: 1rem; margin-bottom: 10px; color: #f05; text-transform: uppercase; }
-        .stats { font-size: 0.85rem; margin-bottom: 12px; text-align: left; line-height: 1.4; }
-        .upgrade-btn { width: 100%; background: transparent; color: #0f6; border: 1px solid #0f6; padding: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-transform: uppercase; margin-top: 5px; }
-        .upgrade-btn:hover:not(:disabled) { background: #0f6; color: #000; }
-        .upgrade-btn:disabled { border-color: #333; color: #333; cursor: not-allowed; }
-        .leaderboard { background: rgba(10,15,25,0.8); border: 1px solid #0ff; border-radius: 10px; padding: 15px; width: 100%; max-width: 340px; box-shadow: 0 0 15px rgba(0,255,255,0.1); margin-top: 10px; }
-        .leaderboard-title { font-size: 1.1rem; color: #0ff; text-shadow: 0 0 10px rgba(0,255,255,0.5); margin-bottom: 15px; text-transform: uppercase; text-align: center; border-bottom: 1px dashed #0ff; padding-bottom: 5px; }
-        .player-row { display: flex; justify-content: space-between; font-size: 0.95rem; padding: 6px 0; border-bottom: 1px solid rgba(0,255,255,0.1); }
-        .player-row:last-child { border: none; }
-        .player-name { color: #fff; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .player-score { color: #0f6; font-weight: bold; }
-        .floating-text { position: absolute; font-size: 1.5rem; font-weight: bold; color: #0f6; pointer-events: none; animation: floatUp 0.7s ease-out forwards; text-shadow: 0 0 8px #0f6; }
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-120px); } }
-    </style>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Virus Clicker</title>
+    <style>*{box-sizing:border-box;user-select:none;font-family:monospace;}body{background:#050508;color:#0f6;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;overflow:hidden;}.game-layout{display:flex;gap:20px;max-width:900px;width:100%;justify-content:center;align-items:flex-start;padding:10px;flex-wrap:wrap;z-index:1;}.container{text-align:center;display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;}h1{font-size:2.2rem;margin:0 0 5px 0;text-shadow:0 0 15px rgba(0,255,102,0.7);}.status-text{color:#888;font-size:0.85rem;margin-bottom:15px;cursor:pointer;}.status-text:hover{color:#0ff;}.score-container{font-size:2rem;font-weight:bold;margin-bottom:20px;color:#0ff;text-shadow:0 0 20px rgba(0,255,255,0.5);}.click-btn{width:150px;height:150px;border-radius:25px;background:#0f1c14;border:3px dashed #0f6;color:#0f6;font-size:3.5rem;cursor:pointer;outline:none;transition:all 0.05s;box-shadow:inset 0 0 20px rgba(0,255,102,0.2),0 0 30px rgba(0,255,102,0.2);display:flex;align-items:center;justify-content:center;}.click-btn:active{transform:scale(0.95);border-style:solid;background:#0f6;color:#000;box-shadow:0 0 40px #0f6;}.shop{margin-top:20px;background:rgba(10,25,15,0.8);padding:15px;border-radius:10px;border:1px solid #0f6;width:100%;}.shop-title{font-size:1rem;margin-bottom:10px;color:#f05;text-transform:uppercase;}.stats{font-size:0.85rem;margin-bottom:12px;text-align:left;line-height:1.4;}.upgrade-btn{width:100%;background:transparent;color:#0f6;border:1px solid #0f6;padding:8px;font-size:0.85rem;cursor:pointer;font-weight:bold;text-transform:uppercase;margin-top:5px;}.upgrade-btn:hover:not(:disabled){background:#0f6;color:#000;}.upgrade-btn:disabled{border-color:#333;color:#333;cursor:not-allowed;}.leaderboard{background:rgba(10,15,25,0.8);border:1px solid #0ff;border-radius:10px;padding:15px;width:100%;max-width:340px;box-shadow:0 0 15px rgba(0,255,255,0.1);margin-top:10px;}.leaderboard-title{font-size:1.1rem;color:#0ff;text-shadow:0 0 10px rgba(0,255,255,0.5);margin-bottom:15px;text-transform:uppercase;text-align:center;border-bottom:1px dashed #0ff;padding-bottom:5px;}.player-row{display:flex;justify-content:space-between;font-size:0.95rem;padding:6px 0;border-bottom:1px solid rgba(0,255,255,0.1);}.player-row.me{color:#0ff;font-weight:bold;}.player-row:last-child{border:none;}.player-name{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.player-score{color:#0f6;font-weight:bold;}.floating-text{position:absolute;font-size:1.5rem;font-weight:bold;color:#0f6;pointer-events:none;animation:floatUp 0.7s ease-out forwards;text-shadow:0 0 8px #0f6;}@keyframes floatUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-120px);}}</style>
 </head>
 <body>
     <div class="game-layout">
         <div class="container">
-            <h1>NET_WORM.exe</h1>
-            <div class="status-text" id="userStatus" onclick="changeName()">Хакер: Завантаження...</div>
-            <div class="score-container">Заражено ПК: <span id="score">0</span></div>
-            <button class="click-btn" id="clickerBtn">🌐</button>
+            <h1>NET_WORM.exe</h1><div class="status-text" id="userStatus" onclick="changeName()">Хакер: Завантаження...</div><div class="score-container">Заражено ПК: <span id="score">0</span></div><button class="click-btn" id="clickerBtn">🌐</button>
             <div class="shop">
                 <div class="shop-title">>_ Модулі</div>
-                <div class="stats">
-                    • Атака: +<span id="clickPower">1</span> ПК/клік<br>
-                    • Авто-злам: +<span id="passivePower">0</span> ПК/сек<br>
-                    • Софт: <span id="virusLevel">Trojan.v1</span>
-                </div>
-                <button class="upgrade-btn" id="upgradeBtn"></button>
-                <button class="upgrade-btn" id="botnetBtn"></button>
+                <div class="stats">• Атака: +<span id="clickPower">1</span> ПК/клік<br>• Авто-злам: +<span id="passivePower">0</span> ПК/сек<br>• Софт: <span id="virusLevel">Trojan.v1</span></div>
+                <button class="upgrade-btn" id="upgradeBtn"></button><button class="upgrade-btn" id="botnetBtn"></button>
             </div>
         </div>
-        <div class="leaderboard">
-            <div class="leaderboard-title">>_ ТОП ХАКЕРІВ</div>
-            <div id="leaderboardContent"></div>
-        </div>
+        <div class="leaderboard"><div class="leaderboard-title">>_ ОНЛАЙН ТОП</div><div id="leaderboardContent">Підключення...</div></div>
     </div>
     <script>
-        const virusNames = ["Trojan.v1", "Spyware.dll", "NetWorm.x64", "Rootkit.sys", "Ransom.Crypto", "AI.Infection"];
-        let username = localStorage.getItem('v_un') || "";
-        if (!username) {
-            username = prompt("Введіть нікнейм:", "Hacker_" + Math.floor(Math.random() * 1000)) || "Anon";
-            username = username.substring(0, 12);
-            localStorage.setItem('v_un', username);
-        }
-        document.getElementById('userStatus').textContent = `Хакер: ${username} ✏️`;
-        
-        function changeName() {
-            let n = prompt("Новий нікнейм:", username);
-            if (n && n.trim() !== "") { username = n.substring(0, 12); localStorage.setItem('v_un', username); document.getElementById('userStatus').textContent = `Хакер: ${username} ✏️`; updateLeaderboard(); }
-        }
-
-        let score = parseInt(localStorage.getItem('v_sc')) || 0;
-        let clickPower = parseInt(localStorage.getItem('v_cp')) || 1;
-        let upgradeCost = parseInt(localStorage.getItem('v_uc')) || 10;
-        let passivePower = parseInt(localStorage.getItem('v_pp')) || 0;
-        let botnetCost = parseInt(localStorage.getItem('v_bc')) || 50;
-
-        const scoreEl = document.getElementById('score'), clickerBtn = document.getElementById('clickerBtn'), upgradeBtn = document.getElementById('upgradeBtn'), botnetBtn = document.getElementById('botnetBtn'), clickPowerEl = document.getElementById('clickPower'), passivePowerEl = document.getElementById('passivePower'), virusLevelEl = document.getElementById('virusLevel'), leaderboardContent = document.getElementById('leaderboardContent');
-
-        function updateUI() {
-            scoreEl.textContent = score.toLocaleString();
-            clickPowerEl.textContent = clickPower;
-            passivePowerEl.textContent = passivePower;
-            virusLevelEl.textContent = virusNames[Math.min(Math.floor((clickPower + passivePower) / 6), virusNames.length - 1)];
-            upgradeBtn.textContent = `Мутувати код (Ціна: ${upgradeCost})`;
-            upgradeBtn.disabled = score < upgradeCost;
-            botnetBtn.textContent = `Ботнет-мережа (Ціна: ${botnetCost})`;
-            botnetBtn.disabled = score < botnetCost;
-        }
-
-        function save() {
-            localStorage.setItem('v_sc', score); localStorage.setItem('v_cp', clickPower); localStorage.setItem('v_uc', upgradeCost); localStorage.setItem('v_pp', passivePower); localStorage.setItem('v_bc', botnetCost);
-        }
-
-        clickerBtn.addEventListener('click', (e) => {
-            score += clickPower; updateUI(); save(); updateLeaderboard();
-            const el = document.createElement('div'); el.className = 'floating-text'; el.textContent = `${Math.random() > 0.5 ? "1" : "0"} (+${clickPower})`; el.style.left = `${e.clientX - 20}px`; el.style.top = `${e.clientY - 20}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 700);
-        });
-
-        upgradeBtn.addEventListener('click', () => {
-            if (score >= upgradeCost) { score -= upgradeCost; clickPower += 2; upgradeCost = Math.round(upgradeCost * 1.7); updateUI(); save(); updateLeaderboard(); }
-        });
-
-        botnetBtn.addEventListener('click', () => {
-            if (score >= botnetCost) { score -= botnetCost; passivePower += 5; botnetCost = Math.round(botnetCost * 1.8); updateUI(); save(); updateLeaderboard(); }
-        });
-
-        setInterval(() => { if (passivePower > 0) { score += passivePower; updateUI(); save(); if(Math.random() > 0.7) updateLeaderboard(); } }, 1000);
-
-        function updateLeaderboard() {
-            const mockPlayers = [
-                { name: "X-Worm", base: 5000 }, { name: "DarkNet", base: 1500 }, { name: "CyberKing", base: 300 }, { name: "Root_User", base: 50 }
-            ];
-            let list = [{ name: username + " (Ви)", score: score }];
-            mockPlayers.forEach(p => { list.push({ name: p.name, score: Math.max(p.base, Math.round(score * (0.4 + Math.random() * 0.8))) }); });
-            list.sort((a, b) => b.score - a.score);
-            leaderboardContent.innerHTML = '';
-            list.slice(0, 5).forEach((p, i) => {
-                const r = document.createElement('div'); r.className = 'player-row';
-                r.innerHTML = `<span class="player-name">${i + 1}. ${p.name}</span><span class="player-score">${p.score.toLocaleString()}</span>`;
-                leaderboardContent.appendChild(r);
-            });
-        }
-
-        updateUI(); updateLeaderboard();
+        const DB_URL="https://firebasedatabase.app";const virusNames=["Trojan.v1","Spyware.dll","NetWorm.x64","Rootkit.sys","Ransom.Crypto","AI.Infection"];let username=localStorage.getItem('v_un')||"";
+        if(!username){username=prompt("Введіть нікнейм:")||"Anon";username=username.substring(0,12).replace(/[.#\$/\[\]]/g,"");localStorage.setItem('v_un',username);}
+        document.getElementById('userStatus').textContent=`Хакер: ${username} ✏️`;
+        function changeName(){let n=prompt("Новий нікнейм:",username);if(n&&n.trim()!==""){let old=username;username=n.substring(0,12).replace(/[.#\$/\[\]]/g,"");localStorage.setItem('v_un',username);document.getElementById('userStatus').textContent=`Хакер: ${username} ✏️`;fetch(`${DB_URL}/${old}.json`,{method:'DELETE'}).then(()=>sendScore());}}
+        let score=parseInt(localStorage.getItem('v_sc'))||0;let clickPower=parseInt(localStorage.getItem('v_cp'))||1;let upgradeCost=parseInt(localStorage.getItem('v_uc'))||10;let passivePower=parseInt(localStorage.getItem('v_pp')) || 0;let botnetCost=parseInt(localStorage.getItem('v_bc'))||50;
+        const scoreEl=document.getElementById('score'),clickerBtn=document.getElementById('clickerBtn'),upgradeBtn=document.getElementById('upgradeBtn'),botnetBtn=document.getElementById('botnetBtn'),clickPowerEl=document.getElementById('clickPower'),passivePowerEl=document.getElementById('passivePower'),virusLevelEl=document.getElementById('virusLevel'),leaderboardContent=document.getElementById('leaderboardContent');
+        function updateUI(){scoreEl.textContent=score.toLocaleString();clickPowerEl.textContent=clickPower;passivePowerEl.textContent=passivePower;virusLevelEl.textContent=virusNames[Math.min(Math.floor((clickPower+passivePower)/6),virusNames.length-1)];upgradeBtn.textContent=`Мутувати код (Ціна: ${upgradeCost})`;upgradeBtn.disabled=score<upgradeCost;botnetBtn.textContent=`Ботнет-мережа (Ціна: ${botnetCost})`;botnetBtn.disabled=score<botnetCost;}
+        function save(){localStorage.setItem('v_sc',score);localStorage.setItem('v_cp',clickPower);localStorage.setItem('v_uc',upgradeCost);localStorage.setItem('v_pp',passivePower);localStorage.setItem('v_bc',botnetCost);}
+        let sendTimeout;function queueUpdate(){clearTimeout(sendTimeout);sendTimeout=setTimeout(sendScore,2000);}
+        async function sendScore(){try{await fetch(`${DB_URL}/${username}.json`,{method:'PUT',body:JSON.stringify({name:username,score:score})});getLeaderboard();}catch(e){}}
+        async function getLeaderboard(){try{const res=await fetch(`${DB_URL}.json`);const data=await res.json();let list=[];if(data){list=Object.values(data).filter(p=>p&&p.name);}list.sort((a,b)=>b.score-a.score);leaderboardContent.innerHTML='';if(list.length===0){leaderboardContent.innerHTML='<div>Мережа чиста.</div>';return;}list.slice(0,10).forEach((p,i)=>{const r=document.createElement('div');r.className='player-row'+(p.name===username?' me':'');r.innerHTML=`<span class="player-name">${i+1}. ${p.name} ${p.name===username?'(Ви)':''}</span><span class="player-score">${p.score.toLocaleString()}</span>`;leaderboardContent.appendChild(r);});}catch(err){}}
+        clickerBtn.addEventListener('click',(e)=>{score+=clickPower;updateUI();save();queueUpdate();const el=document.createElement('div');el.className='floating-text';el.textContent=`${Math.random()>0.5?"1":"0"} (+${clickPower})`;el.style.left=`${e.clientX-20}px`;el.style.top=`${e.clientY-20}px`;document.body.appendChild(el);setTimeout(()=>el.remove(),700);});
+        upgradeBtn.addEventListener('click',()=>{if(score>=upgradeCost){score-=upgradeCost;clickPower+=2;upgradeCost=Math.round(upgradeCost*1.7);updateUI();save();sendScore();}});
+        botnetBtn.addEventListener('click',()=>{if(score>=botnetCost){score-=botnetCost;passivePower+=5;botnetCost=Math.round(botnetCost*1.8);updateUI();save();sendScore();}});
+        setInterval(()=>{if(passivePower>0){score+=passivePower;updateUI();save();if(Math.random()>0.85)sendScore();}},1000);updateUI();sendScore();setInterval(getLeaderboard,10000);
     </script>
 </body>
 </html>
